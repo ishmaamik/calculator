@@ -17,4 +17,4 @@ jobs:
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_HOST }}
         run: |
-          curl "$RENDER_HOST"
+          curl -X POST ${{ secrets.RENDER_HOST }}
