@@ -1,3 +1,5 @@
+import { calculateResult } from '../services/calculator.service.js';
+
 export function calculate(req, res) {
   const body = req.body || {};
   const operation = body.operation;
@@ -22,22 +24,7 @@ export function calculate(req, res) {
     });
   }
 
-  let result;
-
-  switch (operation) {
-    case 'add':
-      result = firstNumber + secondNumber;
-      break;
-    case 'subtract':
-      result = firstNumber - secondNumber;
-      break;
-    case 'multiply':
-      result = firstNumber * secondNumber;
-      break;
-    case 'divide':
-      result = firstNumber / secondNumber;
-      break;
-  }
+  const result = calculateResult(operation, firstNumber, secondNumber);
 
   return res.status(200).json({
     operation,
