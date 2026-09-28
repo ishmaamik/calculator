@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+      :root {
+        --ink: #152238;
+        --muted: #667085;
+        --paper: #f7f5ef;
+        --panel: #ffffff;
+        --line: #d9dfe7;
+        --blue: #2454d6;
+        --blue-dark: #183b9c;
+        --coral: #ed765d;
+        --shadow: 0 24px 60px rgba(29, 49, 80, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: 'Space Grotesk', sans-serif;
+      }
+
+      .page {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 32px 18px;
+        background:
+          linear-gradient(125deg, rgba(36, 84, 214, 0.08), transparent 38%),
+          linear-gradient(320deg, rgba(237, 118, 93, 0.1), transparent 34%);
+      }
+
+      .calculator {
+        width: min(100%, 820px);
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        overflow: hidden;
+        background: var(--panel);
+        border: 1px solid rgba(21, 34, 56, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .intro {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 520px;
+        padding: 42px 34px;
+        color: white;
+        background: var(--blue);
+      }
+
+      .eyebrow {
+        margin: 0 0 24px;
+        color: #b9caff;
+        font-family: 'DM Mono', monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 260px;
+        margin: 0;
+        font-size: clamp(2.5rem, 6vw, 4.2rem);
+        line-height: 0.96;
+        letter-spacing: -0.04em;
+      }
+
+      .intro p {
+        max-width: 240px;
+        margin: 24px 0 0;
+        color: #d8e0ff;
+        line-height: 1.6;
+      }
+
+      .mark {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        color: var(--blue);
+        background: var(--coral);
+        border-radius: 50%;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .form-panel {
+        padding: 42px 40px;
+      }
+
+      .form-panel h2 {
+        margin: 0 0 30px;
+        font-size: 1.25rem;
+      }
+
+      form {
+        display: grid;
+        gap: 20px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 0.88rem;
+        font-weight: 600;
+      }
+
+      input,
+      select,
+      button {
+        width: 100%;
+        min-height: 52px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font: inherit;
+      }
+
+      input,
+      select {
+        padding: 0 14px;
+        color: var(--ink);
+        background: #fbfcfe;
+        font-family: 'DM Mono', monospace;
+        font-size: 1rem;
+      }
+
+      input:focus,
+      select:focus,
+      button:focus-visible {
+        outline: 3px solid rgba(36, 84, 214, 0.2);
+        outline-offset: 2px;
+        border-color: var(--blue);
+      }
+
+      button {
+        margin-top: 6px;
+        border: 0;
+        color: white;
+        background: var(--ink);
+        cursor: pointer;
+        font-weight: 700;
+        transition: background 160ms ease, transform 160ms ease;
+      }
+
+      button:hover {
+        background: var(--blue-dark);
+        transform: translateY(-1px);
+      }
+
+      .result {
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 30px;
+        padding: 20px;
+        border-left: 4px solid var(--coral);
+        background: #f4f6fa;
+      }
+
+      .result-label {
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      #result-value {
+        margin-top: 6px;
+        color: var(--blue);
+        font-family: 'DM Mono', monospace;
+        font-size: 2rem;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+      }
+
+      .error {
+        color: #b42318 !important;
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-size: 1rem !important;
+      }
+
+      @media (max-width: 680px) {
+        .page {
+          padding: 0;
+        }
+
+        .calculator {
+          min-height: 100vh;
+          grid-template-columns: 1fr;
+        }
+
+        .intro {
+          min-height: 300px;
+          padding: 32px 24px;
+        }
+
+        .intro p {
+          margin-top: 18px;
+        }
+
+        .form-panel {
+          padding: 32px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="calculator" aria-labelledby="page-title">
+        <div class="intro">
+          <div>
+            <p class="eyebrow">Everyday arithmetic</p>
+            <h1 id="page-title">Make it add up.</h1>
+            <p>Choose an operation, enter two numbers, and let the calculator handle the rest.</p>
+          </div>
+          <div class="mark" aria-hidden="true">+</div>
+        </div>
+
+        <div class="form-panel">
+          <h2>Calculate a result</h2>
+          <form id="calculator-form">
+            <label for="operation">
+              Operation
+              <select id="operation" name="operation">
+                <option value="add">Add</option>
+                <option value="subtract">Subtract</option>
+                <option value="multiply">Multiply</option>
+                <option value="divide">Divide</option>
+              </select>
+            </label>
+
+            <label for="firstNumber">
+              First number
+              <input id="firstNumber" name="firstNumber" type="number" step="any" required />
+            </label>
+
+            <label for="secondNumber">
+              Second number
+              <input id="secondNumber" name="secondNumber" type="number" step="any" required />
+            </label>
+
+            <button type="submit">Calculate</button>
+          </form>
+
+          <div class="result" aria-live="polite">
+            <span class="result-label">Result</span>
+            <span id="result-value">—</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById('calculator-form');
+      const resultValue = document.getElementById('result-value');
+
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const operation = document.getElementById('operation').value;
+        const firstNumber = Number(document.getElementById('firstNumber').value);
+        const secondNumber = Number(document.getElementById('secondNumber').value);
+
+        resultValue.classList.remove('error');
+        resultValue.textContent = 'Calculating...';
+
+        try {
+          const response = await fetch('/calculate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ operation, firstNumber, secondNumber }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || 'Something went wrong');
+          }
+
+          resultValue.textContent = data.result;
+        } catch (error) {
+          resultValue.classList.add('error');
+          resultValue.textContent = error.message;
+        }
+      });
+    </script>
+  </body>
+</html>
