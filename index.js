@@ -1,11 +1,12 @@
-import express from 'express'
+import express from 'express';
+import calculatorRoutes from './routes/calculator.routes.js';
 
-const app= express()
+const app = express();
+const port = process.env.PORT || 8080;
 
-app.get("/hello", (req, res) => {
-    res.send("Hello World");
+app.use(express.json());
+app.use(calculatorRoutes);
+
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
 });
-
-app.listen(3000, ()=>{
-    console.log(`Server listening on PORT 9000`);
-})
